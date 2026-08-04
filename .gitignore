@@ -1,0 +1,17 @@
+# 잡파일
+.DS_Store
+__pycache__/
+*.pyc
+.env
+
+# ── 배포 제외 (참가자에게 나가면 안 되는 것) ──
+# 기획·보고 문서, 슬라이드, 원본자료
+docs/
+*.hwp
+*.pptx
+*.html
+*.pdf
+# FT 전용 파이프라인·데이터
+ft-skills/
+*.xlsx
+*.csv
