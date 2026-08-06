@@ -32,21 +32,25 @@ description: 로컬 싱크 관광 부트캠프의 시작·온보딩과 진행 �
 2. 아래 표의 "완료 조건"을 순서대로 봐서, 처음 미완인 단계를 **다음 한 걸음**으로 안내.
 3. *"지금은 여기까지 왔네요. 다음은 `○○` 예요 — 준비됐어요?"* 식으로.
 
+## 자료 위치 (스킬이 함께 갖고 있다)
+- `references/cards/` — 주제카드 25장 · `references/guides/` — API 가이드 등
+- `references/data/` — **기준데이터: 전국 234개 시군구 × 31개 지표** (공급·방문·숙박비중·소비·다양성·동선…). 주제·지역 대화에서 숫자로 반응할 때, 이후 단계에서 조회할 때 쓴다. 읽는 법·주의는 `data/README.md`.
+
 ## 단계 지도
 | 단계 | 스킬 | 완료 조건(context.md) |
 |---|---|---|
-| 시작 | `agentic-onboarding` | 컬러 역할 배정 + 비교표 |
-| 1 | `topic-select` | `주제` |
-| 2 | `region-select` | `지역` |
-| 3 | `tourapi-key` | `TourAPI키` |
-| 4 | `data-collect-validate` | `데이터 검증 요약` |
-| 5 | `idea-sketch` | `아이디어` |
-| 5b | `idea-validate` | 핵심 기능 1개로 좁힘 |
-| 6 | `design-setup` | `design.md` |
-| 6b | `prototype-build` | `prototype.html` |
-| 6c | `demo-script` | `demo-script.md` |
-| 7 | `pitch-deck-build` | `pitch-deck.html` |
-| 7b | `pitch-rehearse` | `pitch-script.md` |
+| 시작 | `agentic-onboarding` | `컬러 역할` 배정 + 비교표 작성 |
+| 1 | `topic-select` | `주제`가 채워짐 |
+| 2 | `region-select` | `지역`이 채워짐 |
+| 3 | `tourapi-key` | `TourAPI키: 등록됨/활성확인` |
+| 4 | `data-collect-validate` | `데이터 검증 요약`이 채워짐 |
+| 5 | `idea-sketch` | `아이디어`(사용자·시나리오·기능·MVP) |
+| 5b | `idea-validate` | 핵심 기능 1개로 좁힘 + `잘라낸 것` 기록 |
+| 6 | `prototype-build` | `산출물`에 prototype.html |
+| 6b | `demo-script` | `산출물`에 demo-script.md (시연 리허설 완료) |
+| 7 | `pitch-deck-build` | `산출물`에 pitch-deck.html |
+| 7b | `pitch-rehearse` | `산출물`에 pitch-script.md (발표 리허설 완료) |
+| 7~9 | Meta App | 오피스아워 예약·발표(스킬 아님) |
 
 **선택(언제든)**: `field-research`(인터뷰·여정 매핑)와 각 스킬의 "심화" 블록으로 더 깊이. 시간 남으면 서두르지 말고 지금 단계를 더 파라고 권한다.
 
