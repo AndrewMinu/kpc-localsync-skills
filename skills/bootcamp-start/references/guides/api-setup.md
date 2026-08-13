@@ -1,45 +1,63 @@
-# 공공데이터포털 API 키 설정 (자동 데이터 검증용)
+# 공공데이터포털 API — 키·활용신청·호출 레시피
 
-> 키 1개를 발급해 환경변수로 두면, `tourism-data-validator`와 `topic-card-builder`의 데이터 검증 게이트가 **자동으로** 실시간 데이터를 받아 시그니처를 확인한다.
-> Codex·Claude 모두 셸 환경변수를 읽으므로 동일하게 작동한다.
+> 어떤 API를 고를지는 `$api-select`가 팀 주제를 보고 함께 정한다. 이 문서는 **고른 뒤에 어떻게
+> 부르는지**를 담는다. 값 해석·주의는 `../data/README.md`.
 
 ## 0. 핵심: 키는 1개, 신청은 API별 1회
-> **공공데이터포털 계정당 일반 인증키(서비스키)는 단 1개.** 이 키 하나로 아래 모든 API를 쓴다.
-> 단, **API(데이터셋)마다 "활용신청"을 한 번씩** 해야 한다(대부분 즉시 자동승인·무료). 신청이 승인되면 그 API도 *같은 키*로 동작한다.
-> 즉 **관리할 키 = 1개**, 해야 할 일 = **아래 4개 활용신청**. API마다 다른 키를 받는 게 아니다.
+> **공공데이터포털 계정당 일반 인증키는 단 1개.** 이 키 하나로 아래 API 전부를 쓴다.
+> 단, **API(데이터셋)마다 "활용신청"을 한 번씩** 해야 한다(대부분 즉시 자동승인·무료).
+> 즉 **관리할 키 = 1개**, 해야 할 일 = **고른 API 수만큼의 활용신청**.
 
-## 1. 발급·신청 절차
+## 1. 발급 절차
 1. [공공데이터포털](https://www.data.go.kr) 회원가입·로그인.
-2. 아래 4개 API 페이지에서 각각 **[활용신청]** 클릭(대부분 자동승인, 일부 1~2일).
-3. **마이페이지 > 데이터 활용 > 인증키 발급 현황**에서 내 **일반 인증키(서비스키)** 1개를 확인. → 이 키를 모든 API에 공통으로 사용.
+2. **마이페이지 > 데이터 활용 > 인증키 발급 현황**에서 **일반 인증키(디코딩)** 1개를 확인.
    - 키 형식은 계정에 따라 64자리 16진수(hex) 또는 Base64형(`+`·`/`·`=` 포함) 둘 다 가능. 둘 다 정상이다.
+3. 쓸 API마다 그 페이지에서 **[활용신청]**.
 
-> ⚠ **신규 발급 키는 즉시 작동하지 않는다.** 키 발급/활용신청 승인 직후에는 게이트웨이 반영까지 **최대 1시간(때로 수 시간)** 걸린다. 이때 호출하면 응답이 XML 에러가 아니라 평문 **`Unauthorized`** 로 온다 = "아직 미반영". 시간이 지나면 자동 해결되므로 잠시 후 재시도한다.
+> ⚠ **신규 키·신규 활용신청은 즉시 작동하지 않는다.** 게이트웨이 반영까지 **최대 1시간(때로 수 시간)**.
+> 이때 호출하면 XML 에러가 아니라 평문 **`Unauthorized`** 가 온다 = "아직 미반영". 잠시 후 재시도.
 
-| 활용신청할 API | 역할 | data.go.kr |
-|---|---|---|
-| 한국관광공사_빅데이터_지역별 방문자수_GW | **수요 신호(자동)** — 데이터랩 방문자수 | https://www.data.go.kr/data/15101972/openapi.do |
-| 한국관광공사_관광지별 연관 관광지 정보 | 동선·중심-연관(자동) | https://www.data.go.kr/data/15128560/openapi.do |
-| 한국관광공사_국문 관광정보 서비스_GW (TourAPI) | **장소 공급(자동)** | https://www.data.go.kr/data/15101578/openapi.do |
-| 문화체육관광부 문화예술공연 통합 API | 공연·전시 보강 | https://www.data.go.kr/data/15121487/openapi.do |
+## 1.5 활용신청 대상 — 한국관광공사 API 14종 (단일 목록)
 
-> 참가자에게도 동일하게 안내: "키 1개 발급 + 위 활용신청"이면 끝. (SGIS·AI허브는 별도 사이트라 키가 다름 → §3 수동 보강)
+**이 표가 유일한 목록이다.** 다른 문서는 여기를 가리킨다.
 
-> 참고: 수요 신호 API는 "빅데이터 지역별 방문자수_GW(15101972)" 또는 "지역별 관광 자원 수요" 중 신청한 것을 쓴다. 둘은 엔드포인트가 다르므로, 실제 승인된 API 기준으로 호출 경로를 맞춘다(키 활성화 후 확인).
+| API 이름 (data.go.kr 검색어) | 엔드포인트 | 절 | data.go.kr |
+|---|---|---|---|
+| 국문 관광정보 서비스_GW | `KorService2/areaBasedList2` | §3.5 | `/data/15101578` |
+| 빅데이터_지역별 방문자수_GW | `DataLabService/locgoRegnVisitrDDList` | §3.55 | `/data/15101972` |
+| 기초지자체 중심 관광지 | `LocgoHubTarService1/areaBasedList1` | §3.56 | `/data/15128559` |
+| 두루누비 정보 서비스_GW | `Durunubi/courseList` | §3.57 | 이름으로 검색 |
+| 지역별 관광 수요 강도 | `AreaTarDemDsService/areaTarSjrnDsList`·`areaTarExpDsList` | §3.6 | `/data/15151868` |
+| 지역별 관광 자원 수요 | `AreaTarResDemService/areaTarSvcDemList` | §3.6 | `/data/15152138` |
+| 지역별 관광 다양성 | `AreaTarDivService/areaTouDivList` | §3.6 | `/data/15151365` |
+| 관광지 집중률 방문자 추이 예측 | `TatsCnctrRateService/tatsCnctrRatedList` | §3.7 | 이름으로 검색 |
+| 관광지별 연관 관광지 정보 | `TarRlteTarService1/areaBasedList1` | §3.8 | `/data/15128560` |
+| 무장애 여행 정보 | `KorWithService2/areaBasedList2` | §3.9 | 이름으로 검색 |
+| 반려동물 동반여행 서비스 | `KorPetTourService2/areaBasedList2` | §3.9 | 이름으로 검색 |
+| 웰니스관광정보 | `WellnessTursmService/areaBasedList` | §3.9 | 이름으로 검색 |
+| 고캠핑 정보 조회서비스_GW | `GoCamping/basedList` | §3.9 | 이름으로 검색 |
+| 의료관광정보 | `MdclTursmService/areaBasedList` | §3.9 | 이름으로 검색 |
 
-## 2. 키 등록 (환경변수)
-표준 변수명: **`DATA_GO_KR_SERVICE_KEY`**
+> ✅ **14종 전부 2026-08-13 실호출로 확인**(`resultCode:0000`). 위 경로를 그대로 쓴다.
+>
+> ⚠ 이름이 헷갈리는 셋 — 반려동물은 `KorPetTourService`가 아니라 **`KorPetTourService2`**,
+> 두루누비는 **`Service`가 안 붙고**(`B551011/Durunubi/...`), 중심 관광지는 **`LocgoHubTarService1`**이다.
 
+(선택 보강) 문화체육관광부 문화예술공연 통합 API — `/data/15121487`. 공연·전시 후보 보강용.
+
+## 2. 키를 넘기는 법
+**기본은 채팅에 그대로 붙여넣기.** 환경변수 설정을 몰라도 된다. 스킬이 이번 세션 동안 쓴다.
+
+별도 앱을 만들어 제출할 팀만 프로젝트 `.env`에 둔다:
 ```bash
-# 셸/세션에 등록 (Codex·Claude 공통)
-export DATA_GO_KR_SERVICE_KEY="발급받은_일반_인증키_Decoding"
+DATA_GO_KR_SERVICE_KEY="발급받은_일반_인증키_디코딩"   # .gitignore에 .env 추가
 ```
-> 키는 코드·카드·깃에 하드코딩하지 않는다. 환경변수로만 둔다. (디코딩 키 사용 권장)
+> ⚠ Codex는 **다른 터미널에서 `export` 한 값을 못 볼 수 있다** → `.env`를 쓴다.
+> 키는 코드·카드·`context.md`·깃·HTML에 하드코딩하지 않는다.
 
-## 3. 자동/수동 경계
-- **키로 자동 검증되는 것**: 지역별 방문자수(수요), 연관 관광지(동선), 관광지·음식점·숙박·행사 개수(공급), 공연·전시.
-- **여전히 CSV 다운로드(수동) 보강**: 데이터랩 *체류시간·관광소비*, *야간관광*, *외래객 통계*, 통계청 SGIS 생활인구, AI허브 데이터셋.
-- 검증 게이트는 이 경계를 알고 분기한다: 자동 가능한 지표는 받아서 계산, 수동 지표는 `⚠미검증` + 다운로드 액션으로 남긴다.
+## 3. 이 키로 안 되는 것
+통계청 **SGIS**(생활인구)와 **NIA AI허브**는 별도 사이트라 키가 다르다. 회원가입 후 직접 다운로드해야
+하고 시간이 걸리니 **1일차 출발용으로 쓰지 않는다.**
 
 ## 3.5 확인된 호출 레시피 (2026-06-24 실호출 성공)
 
@@ -68,6 +86,60 @@ https://apis.data.go.kr/B551011/KorService2/areaBasedList2?serviceKey={KEY}&numO
 
 > 한 지역의 공급 프로필 = 위 코드별로 `totalCount`를 합산해 비교. 이게 카드의 "TourAPI 공급 단서"를 자동 채운다.
 
+## 3.55 지역별 방문자수 (DataLabService) — ★ 일별 데이터
+
+```
+https://apis.data.go.kr/B551011/DataLabService/locgoRegnVisitrDDList?serviceKey={KEY}&numOfRows=1000&pageNo=1&MobileOS=ETC&MobileApp=ftskill&_type=json&startYmd=20250901&endYmd=20250907
+```
+
+> ⚠ **가장 흔한 오해**: `touDivCd`·`signguCd`는 **요청 파라미터가 아니라 응답 필드**다.
+> 요청에 넣으면 `INVALID_REQUEST_PARAMETER_ERROR`가 난다. **전국을 받아서 코드로 걸러낸다.**
+
+- **필수: `startYmd`** (`YYYYMMDD`). 없으면 `NO_MANDATORY_REQUEST_PARAMETERS_ERROR1(startYmd)`.
+  `endYmd`를 같이 준다. **일 단위**다(월 단위 아님).
+- **응답 필드**: `signguCode`(행정 시군구) · `signguNm` · `daywkDivCd`/`daywkDivNm`(요일) ·
+  `touDivCd`/`touDivNm` · `touNum`(명, 소수점 포함) · `baseYmd`
+- **`touDivCd`**: `1` 현지인(제외) · `2` 외지인 · `3` 외국인 → **방문 = 2 + 3**
+- **분량**: 하루 = **792행**(264 시군구 × 3 구분). `numOfRows=1000`이면 하루가 한 번에 들어온다.
+  일주일이면 5,544행이니 `numOfRows=1000` × 6페이지 또는 하루씩 7번.
+
+```python
+# 한 주, 한 지역의 방문 = 외지인 + 외국인
+rows = [r for r in items if r['signguCode'] == '11110' and r['touDivCd'] in ('2', '3')]
+visit = sum(float(r['touNum']) for r in rows)
+```
+
+> **연간을 받으려 하지 마라.** 365일 × 792행 = 29만 행이다. 연간 값은 기준데이터
+> (`../data/context_visitors.csv`, `asof 2025-06~2026-05`)에 이미 있다.
+> 라이브는 **특정 기간의 요일·계절 패턴**을 볼 때 쓴다 — 그게 이 API의 쓸모다.
+
+## 3.56 기초지자체 중심 관광지 (LocgoHubTarService1)
+
+```
+https://apis.data.go.kr/B551011/LocgoHubTarService1/areaBasedList1?serviceKey={KEY}&numOfRows=100&pageNo=1&MobileOS=ETC&MobileApp=ftskill&_type=json&baseYm=202509&areaCd=11&signguCd=11110
+```
+- 필수: `baseYm`(YYYYMM) + `areaCd` + `signguCd` — **행정코드**다(`../data/region_admin.csv`).
+- 티맵 내비 기반. **그 시군구에서 다른 관광지와 가장 많이 연계 방문되는 관광지 100위.**
+- 응답: `hubTatsNm`(관광지명) · `hubRank`(순위) · `hubCtgryLclsNm`/`hubCtgryMclsNm`(분류) ·
+  `mapX`/`mapY`(좌표) · `signguNm`
+- 쓸모: **프로토타입의 출발점 목록**. 좌표가 있어 지도에 바로 찍힌다. `TarRlteTarService1`(§3.8)과
+  짝지으면 "중심 관광지 → 거기서 어디로 새는가"가 한 화면에 나온다.
+
+## 3.57 두루누비 걷기여행길 (Durunubi)
+
+```
+# 코스 (실제로 쓸 것) — 전국 144개
+https://apis.data.go.kr/B551011/Durunubi/courseList?serviceKey={KEY}&numOfRows=200&pageNo=1&MobileOS=ETC&MobileApp=ftskill&_type=json
+# 테마 4개 (남파랑길·해파랑길 등)
+https://apis.data.go.kr/B551011/Durunubi/routeList?serviceKey={KEY}&numOfRows=10&pageNo=1&...
+```
+- ⚠ **서비스 경로에 `Service`가 안 붙는다** — `B551011/Durunubi/...`.
+- ⚠ **지역 파라미터가 없다.** 전국 144개를 받아 응답의 **`sigun`**(예: `"부산 영도구"`)으로 거른다.
+  코드가 아니라 **한글 지역명**이라 `regions.csv`의 `sigungu`와 문자열로 맞춰야 한다.
+- 응답: `crsKorNm`(코스명) · `crsDstnc`(km) · `crsTotlRqrmHour`(분) · `crsLevel`(난이도) ·
+  `crsCycle`(순환/비순환) · `crsSummary`·`crsTourInfo`·`travelerinfo`(교통편) · `gpxpath`(GPX)
+- 쓸모: 뚜벅이·접근성(B3)·웰니스(E3) 주제. **소요시간·난이도가 숫자로 있어 코스 추천에 바로 쓴다.**
+
 ## 3.6 관광수요지수 3종 (데이터랩 지표를 API로) ★신규
 
 > 데이터랩 '관광수요지수'를 API로 제공. **체류·소비를 이제 수동 다운 없이 받는다.**
@@ -89,14 +161,7 @@ https://apis.data.go.kr/B551011/AreaTarDemDsService/areaTarSjrnDsList?serviceKey
 - 응답: `areaNm`·`signguNm`·`{지표}IxNm`·`{지표}IxVal`.
 - ⚠ **지표코드를 안 넣으면 0건**이 나올 수 있다(반드시 지정).
 
-**활용신청**: 세 API 각각 1회(자동승인·무료, 개발계정 1,000회/일).
-- 수요 강도 — data.go.kr/data/15151868 · 자원 수요 — 15152138 · 다양성 — 15151365
-
-## 4. 스킬이 키를 쓰는 방식
-- `tourism-data-validator`는 실행 시 `DATA_GO_KR_SERVICE_KEY` 존재 여부를 먼저 확인한다.
-  - 있으면: 위 자동 데이터셋을 호출해 평균·합계·순위·비교·증감으로 시그니처를 검증.
-  - 없으면: 전부 다운로드 액션 목록으로 정리(미검증 플래그).
-- `topic-card-builder`의 2단계 데이터 검증은 이 스킬 로직을 그대로 호출한다.
+**활용신청**: 세 API 각각 1회 (§1.5 목록 참조 · 자동승인·무료, 개발계정 1,000회/일).
 
 ## 3.7 관광지 집중률·방문 추이 예측 (TatsCnctrRateService) — 참가자 조건부
 `GET https://apis.data.go.kr/B551011/TatsCnctrRateService/tatsCnctrRatedList`
@@ -109,17 +174,20 @@ https://apis.data.go.kr/B551011/AreaTarDemDsService/areaTarSjrnDsList?serviceKey
   `file://`로 연 HTML은 옆에 둔 로컬 `data.json`을 fetch하는 것도 막힌다(origin `null`) → **별도 JSON 파일도 쓰지 않는다.**
   프로토타입은 **터미널에서 한 번 호출 → 결과를 HTML 스크립트에 `const DATA = [...]` 로 인라인**한다. 파일 하나로 열리고, 키는 `.env`에만 남는다(HTML에 넣으면 업로드 시 노출).
   실서비스라면 정적 데이터가 아니라 **서버가 API를 대신 호출**하는 구조로 간다(CORS·키 문제가 함께 사라진다). 피칭에서 이 한계를 짚으면 좋다.
-  → `participant-skills/data-collect-validate` §④, `participant-skills/prototype-build` 심화에 반영됨.
 
 ## 3.8 관광지별 연관 관광지 (TarRlteTarService1) — 카드 근거
 `GET .../TarRlteTarService1/areaBasedList1` · 필수: `baseYm`(202509) + `areaCd` + `signguCd`(**시군구 필수**).
 - 티맵 내비 기반 관광지→연관 관광지 랭킹. 파생: **동선 유출비율**(연관지가 타 시군구인 비율), 연관 관광지 수, 최다 유출처.
-- 전국 252 시군구 수집 완료 → `templates/context_rlte.csv` (평균 유출 40.8%). 도시 구는 구조상 높으니 **도시·시군을 나눠 비교**한다.
+- 전국 252개 행정 시군구 수집 → 234개 TourAPI 지역으로 집계 → `../data/context_rlte.csv` (평균 유출 40.8%). 도시 구는 구조상 높으니 **도시·시군을 나눠 비교**한다.
 
-## 3.9 니치 공급 3종 — 카드 근거
-- 무장애: `KorWithService2/areaBasedList2` (TourAPI 코드) — 9,948건
-- 웰니스: `WellnessTursmService/areaBasedList` (**`langDivCd=KOR` 필수**, lDong 코드) — 174건, 137개 시군구 0건
-- 캠핑: `GoCamping/basedList` (도/시군구 **이름**) — 3,044건
-→ `templates/context_niche.csv`
+## 3.9 대상별 공급 5종 (2026-08-13 실호출 확인)
+| 대상 | 엔드포인트 | 지역 지정 | 비고 |
+|---|---|---|---|
+| 무장애 | `KorWithService2/areaBasedList2` | `areaCode`·`sigunguCode` (TourAPI) | 9,948건 |
+| 반려동물 | **`KorPetTourService2`**`/areaBasedList2` | `areaCode`·`sigunguCode` (TourAPI) | 서울 54건. 응답은 KorService2와 같은 스키마 |
+| 웰니스 | `WellnessTursmService/areaBasedList` | lDong 코드 | **`langDivCd=KOR` 필수** · 174건, 137개 시군구 0건 |
+| 캠핑 | `GoCamping/basedList` | 도/시군구 **이름** | 3,044건 |
+| 의료관광 | `MdclTursmService/areaBasedList` | `lDongRegnCd`·`lDongSignguCd` | **`langDivCd` 필수** · KOR 326건, 서울 65% 편중 |
+→ `../data/context_niche.csv`
 - ⚠ 2026년 **광주+전남 → '전남광주통합특별시'(코드 12)** 통합. 시도코드로만 집계하면 두 지역이 0으로 보인다. 이름 기준으로 되돌려 붙일 것.
-- 의료관광(`MdclTursmService`, `langDivCd` 필수): 331건 중 서울 214(65%) — 지역 편중이 심해 **카드로 쓰지 않는다**.
+> 의료관광은 서울 편중(65%)이 심해 **기준데이터·카드에는 안 쓴다.** 카드 E6를 고른 팀만 라이브로 받아 검증한다.

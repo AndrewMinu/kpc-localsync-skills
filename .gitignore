@@ -15,3 +15,7 @@ docs/
 ft-skills/
 *.xlsx
 *.csv
+
+# 단, 참가자 스킬이 함께 갖고 나가는 기준데이터는 배포본이다.
+# 이게 없으면 topic-select·region-select의 내부 검증이 새 clone에서 눈이 먼다.
+!skills/**/references/data/*.csv

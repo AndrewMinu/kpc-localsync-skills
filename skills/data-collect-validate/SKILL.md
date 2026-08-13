@@ -6,11 +6,21 @@ description: 부트캠프 4단계로, TourAPI 데이터를 받아 팀 가설을 
 # 4단계 · 데이터 수집·검증 (data-collect-validate)
 
 ## 목적
-1~2단계의 **주제×지역**에 대해 실제 데이터를 받아 **가설이 서는지** 확인한다. 자유주제/기타지역은 이 단계가 **필수**(미리 검증돼 있지 않음).
+앞에서 정한 **주제×지역**에 대해 실제 데이터를 받아 **가설이 서는지** 확인한다. 자유주제/기타지역은 이 단계가 **필수**(미리 검증돼 있지 않음).
+
+## 이 단계의 역할
+**주도: 네비게이션** · **찌르는 사람: 가이드**
+숫자를 받는 사람과, 그 숫자가 우리 문제 얘기인지 되묻는 사람이 짝을 이룬다.
+
+`context.md`의 `팀원`에서 **이름을 읽어 그 사람을 부른다.** *"○○님이 네비게이션이니까 — 먼저 어떻게 보세요?"*
+한 명에게 쏠리면 찌르는 사람을 이름으로 호명한다. 2인 팀이면 드라이버는 공동이다.
 
 ## 시작 전
 - `context.md`의 `주제`·`지역`·`경로`를 읽는다. **지역코드는 카드 `코드` 열**(`area-시군구`, 예 `36-17`)에서 온다. 자유지역이면 `areaCode2`로 라이브 조회(아래 레시피).
-- 키: 프로젝트 `.env`의 `DATA_GO_KR_SERVICE_KEY` 또는 채팅으로 받은 값(없으면 `tourapi-key` 먼저). ⚠Codex는 다른 터미널 export가 안 보일 수 있으니 `.env` 권장. 규칙·레시피: `bootcamp-start/references/guides/api-setup.md`, 분석 수준: `bootcamp-start/references/guides/bootcamp-context.md §3-B`(없으면 프로젝트 `ft-skills/shared-context/`).
+- 키: 프로젝트 `.env`의 `DATA_GO_KR_SERVICE_KEY` 또는 채팅으로 받은 값. ⚠Codex는 다른 터미널 export가 안 보일 수 있으니 `.env` 권장. 규칙·레시피: `bootcamp-start/references/guides/api-setup.md`, 분석 수준: `bootcamp-start/references/guides/bootcamp-context.md §3-B`.
+- **활용신청은 2단계(`api-select`)에서 끝냈어야 한다.** `context.md`의 `활용신청`을 보고, 지금 받으려는
+  데이터의 서비스가 목록에 없거나 `활성확인`이 안 됐으면 **여기서 신청하지 말고 `$api-select`로 돌려보낸다**
+  — 신규 신청은 반영에 최대 1시간이라 4단계 한복판에서 하면 팀이 멈춘다.
 - 카드 경로면 그 카드의 **5번(확인하고 싶은 단서)** 을 가설 명제로 쓴다. 자유주제면 가설을 명제 2~4개로 쪼갠다.
 
 ## 분석 수준 (엄수)
@@ -24,8 +34,17 @@ https://apis.data.go.kr/B551011/KorService2/areaBasedList2?serviceKey={KEY}&numO
 contentTypeId(CT): 12관광지·14문화·15축제·25코스·28레포츠·32숙박·38쇼핑·39음식. 필요한 유형만 받는다.
 
 ### ① 방문 (얼마나 오나) — 방문자수
-- **카드 후보 지역이면 방문(천명)이 이미 카드에 있다** — 그대로 쓴다(재수집 불필요).
-- 더 파고들거나 자유지역이면: `DataLabService/locgoRegnVisitrDDList`. 한 번 호출로 전 시군구가 나오고 대상 지역의 **행정 signguCode**로 필터. `touDivCd` 1현지인(제외)·2외지인(내국인)·3외국인 → **방문 = 2+3**. 월별로 계절 편차 확인 가능.
+- **카드 후보 지역이면 방문(천명)이 이미 카드에 있다** — 그대로 쓴다(재수집 불필요). 카드 표 아래
+  `기준시점` 줄을 팀에게 같이 읽어준다. *"이 숫자는 2025-06~2026-05 연간이에요."*
+- 더 파고들거나 자유지역이면 라이브로 받는다:
+```
+https://apis.data.go.kr/B551011/DataLabService/locgoRegnVisitrDDList?serviceKey={KEY}&numOfRows=1000&pageNo=1&MobileOS=ETC&MobileApp=ftskill&_type=json&startYmd=20250901&endYmd=20250907
+```
+  - ⚠ **`touDivCd`·`signguCd`를 요청에 넣으면 에러난다** — 둘 다 **응답 필드**다. 전국을 받아 코드로 거른다.
+  - `startYmd` **필수**(`YYYYMMDD`, 일 단위). 하루 = 792행(264 시군구 × 3구분).
+  - `touDivCd` `1`현지인(제외) `2`외지인 `3`외국인 → **방문 = 2+3**. `touNum`이 값(명).
+  - **연간을 받으려 하지 마라** — 29만 행이다. 연간은 카드 값을 쓰고, 라이브는 **요일·계절 패턴**에 쓴다.
+  - 자세히: `api-setup.md §3.55`.
 
 ### ② 체류 (자고 가나) — 관광 체류 강도 ★
 ```
@@ -37,12 +56,25 @@ https://apis.data.go.kr/B551011/AreaTarDemDsService/areaTarSjrnDsList?serviceKey
 
 ### ③ 소비 (돈을 쓰나) — 관광 소비 강도 ★
 ```
-https://apis.data.go.kr/B551011/AreaTarDemDsService/areaTarExpDsList?serviceKey={KEY}&...&baseYm={YYYYMM}&areaCd={행정시도}&tarExpDsIxCd=2201
+https://apis.data.go.kr/B551011/AreaTarDemDsService/areaTarExpDsList?serviceKey={KEY}&MobileOS=ETC&MobileApp=ftskill&_type=json&baseYm={YYYYMM}&areaCd={행정시도}&signguCd={행정시군구}&tarExpDsIxCd=2201
 ```
 - 지표코드: `2201` **외지인 소비액**(핵심) · 2202 외지인 소비 비중 · 2203 방문량 대비 소비액 · 22 전체.
 
 > ⚠ **값은 상대 지수**다(예: 79.08). 절대 금액·퍼센트로 단정하지 말고 **다른 지역과 비교·순위**로 해석한다.
-> 행정 코드(areaCd/signguCd)는 TourAPI 코드와 **다르다** — 카드의 `코드`는 TourAPI용, 여기선 행정코드(예: 서울 11, 구로 11530).
+
+### ★ 코드 변환 — 짐작하지 말고 표를 본다
+`areaCd`/`signguCd`는 **행정코드**로, 카드의 `코드`(TourAPI)와 **다르다.**
+변환표: `bootcamp-start/references/data/region_admin.csv`
+
+```
+36-16 창원시 → areaCd=48 · signguCd 48121 48123 48125 48127 48129
+```
+
+**통합시 12곳**(수원·성남·고양·용인·창원·청주·천안·전주·포항·안산·안양·부천)은 수요지수가 **구 단위로만**
+나온다. 시 값을 보려면 구를 다 받아 **평균**한다. 기준데이터의 값도 그렇게 만든 것이다.
+
+> 팀에게 이걸 짚어주면 좋은 수업이 된다: *"창원 하나를 보려고 했는데 API는 구 5개를 줘요. 이걸 어떻게
+> 하나로 볼까요?"* — 평균이 답이지만 왜 평균인지 팀이 말하게 한다.
 
 ### ④ 혼잡 (언제 붐비나) — 관광지 집중률·방문 추이 예측 ★주제 조건부
 **모든 팀이 받는 게 아니다.** 주제가 **쏠림·오버투어리즘 / 계절·요일 편중 / 분산·혼잡 회피 / 코스 시간대 추천**과 닿을 때만 받는다. 애매하면 팀에 물어라: *"우리 문제가 '언제·어디가 붐비냐'와 상관있나요?"*
@@ -110,6 +142,12 @@ https://apis.data.go.kr/B551011/KorService2/areaCode2?serviceKey={KEY}&numOfRows
   - *"이 숫자 뒤의 '진짜 사람'은 어떤 사람일까요? `$deep-dive`로 목소리를 들어봐도 좋아요."*
   - *"인근 다른 지역과 비교하면 우리 지역이 정말 특이한지 보여요 — 해볼까요?"*
 - 가설이 약하면: 지역/주제를 조정하거나(2단계 재실행) 명제를 손보라고 권한다.
+
+## 자동으로 채우지 않기
+- **판정을 AI가 내리지 않는다.** 수치가 나올 때마다 *"이거 예상이랑 같아요? 무슨 뜻인 것 같아요?"* 로
+  팀이 해석하게 하고, 리포트 표의 `판정`·`코멘트`는 **팀이 말한 것만** 적는다.
+- 팀이 아직 말하지 않은 명제를 리포트에 추가하지 않는다. 빈 행은 빈 행으로 둔다.
+- 종합 판정도 팀에게 묻는다. *"그래서 우리 가설, 유지예요 수정이에요?"*
 
 ## 함정
 - 절대값만으로 크다/작다 단정 → 반드시 비교 대상과.
