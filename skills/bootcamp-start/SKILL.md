@@ -52,7 +52,7 @@ description: 로컬 싱크 관광 부트캠프의 시작·온보딩과 진행 �
 | 7b | `pitch-rehearse` | `산출물`에 pitch-script.md (발표 리허설 완료) |
 | 7~9 | Meta App | 오피스아워 예약·발표(스킬 아님) |
 
-**선택(언제든)**: `field-research`(인터뷰·여정 매핑)와 각 스킬의 "심화" 블록으로 더 깊이. 시간 남으면 서두르지 말고 지금 단계를 더 파라고 권한다.
+**선택(언제든)**: `deep-dive`(인터뷰·여정 매핑)와 각 스킬의 "심화" 블록으로 더 깊이. 시간 남으면 서두르지 말고 지금 단계를 더 파라고 권한다.
 
 ## 데이터 위치 (모든 스킬 공통)
 주제카드·가이드·상태 템플릿은 **이 스킬(bootcamp-start)의 `references/`**에 함께 설치된다: `references/cards/`, `references/guides/`, `references/_context-template.md`. 다른 스킬도 이 경로를 참조 → 어느 폴더에서 켜도 동작. (프로젝트에서 직접 실행 중이면 `ft-skills/pipeline/cards`·`ft-skills/shared-context`도 가능.)
