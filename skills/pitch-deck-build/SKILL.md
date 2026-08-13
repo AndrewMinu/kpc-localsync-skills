@@ -1,6 +1,6 @@
 ---
 name: pitch-deck-build
-description: 부트캠프 — 솔루션·프로토타입을 발표 피칭덱(pitch-deck.html)으로 만든다. 시작할 때 프로토타입 디자인을 그대로 쓸지 발표용으로 바꿀지 팀에게 묻는다. "피칭덱 만들어", "발표자료 만들어", "슬라이드" 라고 할 때 사용한다. 대본·예상질문·리허설은 pitch-prep가 담당한다.
+description: 솔루션과 프로토타입을 발표 피칭덱(pitch-deck.html)으로 만든다.
 ---
 
 # 발표 덱 만들기 (pitch-deck-build)

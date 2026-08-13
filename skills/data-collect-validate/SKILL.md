@@ -1,6 +1,6 @@
 ---
 name: data-collect-validate
-description: 부트캠프 4단계 — 주제·지역에 맞춰 TourAPI 데이터를 받아 가설을 단순분석으로 검증한다. "데이터 받아줘", "데이터 검증", "숫자로 확인" 이라고 할 때 사용한다. 팀 예상을 먼저 묻고 수치마다 되물으며 진행한다.
+description: 부트캠프 4단계로, TourAPI 데이터를 받아 팀 가설을 단순분석으로 검증한다.
 ---
 
 # 4단계 · 데이터 수집·검증 (data-collect-validate)

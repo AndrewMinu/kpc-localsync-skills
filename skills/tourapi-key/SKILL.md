@@ -1,6 +1,6 @@
 ---
 name: tourapi-key
-description: 부트캠프 3단계 — 참가자가 공공데이터포털 TourAPI 키를 발급받아 채팅에 붙여넣어 쓰게 안내한다. "키 발급", "API 키", "데이터 받으려면 뭐 해" 라고 할 때 사용한다. 발급 절차와 활성 확인을 돕는다(환경변수 몰라도 됨).
+description: 부트캠프 3단계로, 공공데이터포털 TourAPI 키 발급과 활성 확인을 안내한다.
 ---
 
 # 3단계 · TourAPI 키 발급 (tourapi-key)

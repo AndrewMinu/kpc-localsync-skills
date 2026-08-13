@@ -1,6 +1,6 @@
 ---
 name: agentic-onboarding
-description: 부트캠프 시작하기 — AI와 일하는 방식(Agentic Workflow)을 몸으로 체험시킨다. 설치 전에 맨몸으로 받은 AI 초안을 체크리스트로 두들기고, 스킬로 재요청해 결과 차이를 팀이 직접 평가하게 한다. 컬러 역할(Red/Blue/Green/Yellow)도 여기서 배정한다. "온보딩 시작", "워크플로우 실습", "스킬이 뭐야", "부트캠프 시작" 이라고 할 때 사용한다.
+description: 부트캠프 0단계로, AI와 일하는 법(Agentic Workflow)을 실습으로 체험하고 팀 컬러 역할을 배정한다.
 ---
 
 # 시작하기 · AI와 일하는 법 (Agentic Workflow)

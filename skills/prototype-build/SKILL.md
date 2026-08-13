@@ -1,6 +1,6 @@
 ---
 name: prototype-build
-description: 부트캠프 6단계 — 솔루션 MVP를 작동하는 단일 HTML 프로토타입으로 만들고, 완성되면 Codex Sites로 배포해 팀의 URL을 만든다. "프로토타입 만들어", "데모 만들자", "화면 만들어", "배포하자", "사이트로 올리자", "URL 만들자"라고 할 때, 또는 아이디어 검증을 끝낸 팀이 화면 작업을 시작할 때 반드시 사용한다. 실제 데이터를 화면에 넣으려 할 때(TourAPI·혼잡도)도 이 스킬을 쓴다 — CORS 함정을 피하는 정해진 방법이 있다.
+description: 부트캠프 6단계로, 작동하는 단일 HTML 프로토타입을 만들고 Codex Sites로 배포해 팀 URL을 만든다.
 ---
 
 # 6단계 · 프로토타이핑 (prototype-build)

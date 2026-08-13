@@ -1,6 +1,6 @@
 ---
 name: design-setup
-description: 부트캠프 — 프로토타입·피칭덱을 만들기 전에 팀의 디자인을 먼저 확정한다. 무드·색 조합·서체·간격을 골라 CSS 토큰(design.md)으로 박아둔다. 이후 prototype-build와 pitch-deck-build는 이 토큰만 가져다 쓰고 내용에만 집중한다. "디자인 정하자", "색 골라줘", "무드 정하기", "테마 세팅" 이라고 할 때 사용한다.
+description: 프로토타입 제작 전에 팀 디자인(무드, 색, 서체)을 CSS 토큰으로 확정한다.
 ---
 
 # 디자인 세팅 (design-setup)
