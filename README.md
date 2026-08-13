@@ -18,7 +18,17 @@ Codex를 열고 이 한 문장만 던지세요.
 npx skills@latest add AndrewMINU/kpc-bootcamp -a codex -g -y
 ```
 
-## 3. 시작
+## 3. 첫 실습 (10분)
+
+아까 받아둔 '강릉 코스'를 들고, 이번엔 스킬로 다시:
+
+```
+$trip-course
+```
+
+맨몸 결과와 뭐가 다른지 팀이 직접 비교하는 실습이 여기서 벌어진다.
+
+## 4. 시작
 
 ```
 $bootcamp-start
