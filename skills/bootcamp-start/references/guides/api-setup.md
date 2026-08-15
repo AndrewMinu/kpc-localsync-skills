@@ -167,7 +167,7 @@ https://apis.data.go.kr/B551011/AreaTarDemDsService/areaTarSjrnDsList?serviceKey
 `GET https://apis.data.go.kr/B551011/TatsCnctrRateService/tatsCnctrRatedList`
 - 필수: `areaCd`(행정 시도) + `signguCd`(행정 시군구). **`baseYm`/`baseYmd`를 넣으면 INVALID 에러** — 넣지 않는다.
 - 응답: `tAtsNm`(관광지) · `baseYmd` · `cnctrRate`. 조회일부터 **30일치 예보**, 가장 붐빌 때를 100으로 본 **상대 지수**(KT 통신데이터 기반).
-- 예) 종로구 = 관광지 34곳 × 30일(3,390행). 가회민화박물관 월 57.9 → 토 97.8 → 월 58.8.
+- 예) 종로구 = 관광지 34곳 × 30일(1,020행). 가회민화박물관 월 57.9 → 토 97.8 → 월 58.8.
 - **카드 근거로 쓰지 않는다** — 조회 시점마다 값이 바뀌어 고정 근거가 못 된다.
 - 쓰임: (1) 쏠림·계절·분산 주제 팀의 **검증 보조**, (2) 프로토타입의 **혼잡도 기능**.
 - ⚠ **CORS 불가**: `apis.data.go.kr`은 CORS 헤더를 주지 않는다 → 브라우저(HTML)에서 직접 fetch하면 실패한다.

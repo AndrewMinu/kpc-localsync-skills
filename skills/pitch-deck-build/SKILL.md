@@ -276,7 +276,7 @@ description: 솔루션과 프로토타입을 발표 피칭덱(pitch-deck.html)�
 - **훅·클로징 다듬기**: 첫 15초와 마지막 한 문장을 여러 버전으로 써보고 고른다.
 
 ## context.md 갱신
-- `산출물`에 `pitch-deck.html`(+ `speaker-notes.md`) 경로.
+- `산출물`에 `pitch-deck.html`(+ `speaker-notes.md`) 경로, `단계: 6b`.
 - 로그에 "발표 덱 vN" 기록.
 
 ## 끝맺음
