@@ -5,17 +5,7 @@
 
 ---
 
-## 1. 먼저 이것부터 (설치 전에)
-
-Codex를 열고 이 한 문장만 던지세요.
-
-```
-강릉 1박2일 코스 짜줘
-```
-
-조건은 아무것도 주지 마세요. 나온 결과는 **그대로 두세요.** 곧 씁니다.
-
-## 2. 설치
+## 1. 설치
 
 ```bash
 npx skills@latest add AndrewMINU/kpc-bootcamp -a codex -g -y
@@ -23,17 +13,8 @@ npx skills@latest add AndrewMINU/kpc-bootcamp -a codex -g -y
 
 한 번만 하면 됩니다. 스킬 13개와 주제카드 25장, 전국 기준데이터가 같이 깔립니다.
 
-## 3. 첫 실습 (10분)
 
-아까 받아둔 '강릉 코스'를 들고, 이번엔 스킬로 다시:
-
-```
-$trip-course
-```
-
-맨몸 결과와 뭐가 다른지 팀이 직접 비교하는 실습이 여기서 벌어진다.
-
-## 4. 시작
+## 2. 시작
 
 ```
 $bootcamp-start
