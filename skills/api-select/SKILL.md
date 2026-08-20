@@ -5,32 +5,34 @@ description: 부트캠프 2단계로, 팀 주제에 맞는 관광 API를 골라 
 
 # 2단계 · 우리 데이터 고르기 (api-select)
 
+> 문장부호: 출력에 `—`(em-dash)를 쓰지 않는다. 쉼표나 마침표로 끊는다.
+
 ## 목적
 팀이 만든 주제카드를 읽고, **한국관광공사 API 14종 중 우리에게 필요한 것**을 골라 활용신청하고,
 서비스마다 실제로 응답이 오는지 확인한다. 4단계에서 데이터를 받을 때 막히지 않게 미리 뚫어두는 단계다.
 
 **주도는 Blue**, 반대편에서 찌르는 사람은 **Green**이다.
-*"○○님이 Blue니까 — 우리 문제 확인하려면 뭐가 필요할 것 같아요?"*
+*"○○님이 Blue니까. 우리 문제 확인하려면 뭐가 필요할 것 같아요?"*
 
 ## 말투
 가볍고 친절하게. 활용신청은 처음 해보는 사람이 많으니 겁주지 말고 "생각보다 금방 돼요 🙂" 톤으로.
 
 ## 시작 전
 - `context.md`의 **`주제`·`경로`** 를 읽는다(없으면 `topic-select` 먼저).
-- **인증키는 이미 있어야 한다** — `bootcamp-start`에서 회원가입·발급을 마치고 왔다.
+- **인증키는 이미 있어야 한다**. `bootcamp-start`에서 회원가입·발급을 마치고 왔다.
   없으면 [공공데이터포털](https://www.data.go.kr) 회원가입 → **마이페이지 > 인증키 발급 현황**에서
   **일반 인증키(디코딩)** 1개를 받아오게 한다. **키 하나로 아래 14종 전부 쓴다.**
 - 호출 레시피·파라미터는 `../bootcamp-start/references/guides/api-setup.md`.
 
 ---
 
-## ① 우리 문제엔 뭐가 필요한가 — 팀이 고른다
+## ① 우리 문제엔 뭐가 필요한가: 팀이 고른다
 
 **표를 기계적으로 적용하지 않는다.** 팀이 자기 언어로 쓴 주제카드의 **문제·가설·확인할 데이터**를
 읽고, **근거와 함께 2~4개를 제안**한 뒤 팀이 고르게 한다.
 
 > *"우리 가설이 '외국인은 오는데 지방 정보가 없다'였잖아요. 그럼 장소가 실제로 얼마나 있는지(공급)랑
-> 외국인이 어느 나라에서 오는지(다양성)를 보면 되겠는데 — 이 셋이면 될까요, 빠진 게 있을까요?"*
+> 외국인이 어느 나라에서 오는지(다양성)를 보면 되겠는데, 이 셋이면 될까요, 빠진 게 있을까요?"*
 
 | API (data.go.kr 검색어) | 서비스 | 무엇을 주나 |
 |---|---|---|
@@ -52,7 +54,7 @@ description: 부트캠프 2단계로, 팀 주제에 맞는 관광 API를 골라 
 **고를 때 짚어줄 것**
 - **공급만 받고 끝내지 않는다.** 장소 개수는 "추천할 게 있나"만 말해준다. 문제를 증명하려면
   **방문 → 체류 → 소비** 사슬 중 어디가 끊겼는지 봐야 한다.
-- **혼잡(집중률)은 두 겹으로 쓸모 있다** — 검증 보조 + 프로토타입 실시간 기능. 쏠림·계절·분산 주제가
+- **혼잡(집중률)은 두 겹으로 쓸모 있다**. 검증 보조 + 프로토타입 실시간 기능. 쏠림·계절·분산 주제가
   아니어도 데모를 살리고 싶으면 신청해둘 만하다.
 - 대상이 뚜렷한 주제(무장애·반려동물·웰니스·캠핑·의료)는 그 전용 API가 곧 근거다.
 - 애매하면 물어라: *"우리 문제가 '언제·어디가 붐비냐'와 상관있나요?"*
@@ -80,7 +82,7 @@ description: 부트캠프 2단계로, 팀 주제에 맞는 관광 API를 골라 
 - *"우리 사용자가 누굴지 미리 한 명만 그려볼까요? 다음 단계에서 크게 쓰여요."*
 - 시간 되면 `$deep-dive`로 그 지역·사용자 이야기를 미리 들어봐도 좋다.
 
-## ④ 활성확인 — **고른 서비스마다** 한 번씩
+## ④ 활성확인: **고른 서비스마다** 한 번씩
 
 한 건만 찔러보고 "됐다"고 넘기지 않는다. **신청한 서비스 각각**에 최소 호출을 날린다.
 값은 출력하지 않고 응답 코드만 본다.
@@ -92,23 +94,25 @@ https://apis.data.go.kr/B551011/KorService2/areaBasedList2?serviceKey={KEY}&numO
 # 수요강도 (AreaTarDemDsService)
 https://apis.data.go.kr/B551011/AreaTarDemDsService/areaTarSjrnDsList?serviceKey={KEY}&MobileOS=ETC&MobileApp=ftskill&_type=json&baseYm=202509&areaCd=11&signguCd=11530&tarSjrnDsIxCd=2102
 
-# 집중률 (TatsCnctrRateService) — baseYm 넣으면 에러난다
+# 집중률 (TatsCnctrRateService): baseYm 넣으면 에러난다
 https://apis.data.go.kr/B551011/TatsCnctrRateService/tatsCnctrRatedList?serviceKey={KEY}&numOfRows=1&pageNo=1&MobileOS=ETC&MobileApp=ftskill&_type=json&areaCd=11&signguCd=11110
 ```
 
 ```
-# 방문자수 (DataLabService) — startYmd 필수. touDivCd·signguCd는 요청에 넣으면 에러다
+# 방문자수 (DataLabService): startYmd 필수. touDivCd·signguCd는 요청에 넣으면 에러다
 https://apis.data.go.kr/B551011/DataLabService/locgoRegnVisitrDDList?serviceKey={KEY}&numOfRows=1&pageNo=1&MobileOS=ETC&MobileApp=ftskill&_type=json&startYmd=20250901&endYmd=20250901
 
-# 반려동물 — Service'2' 다. KorPetTourService는 없는 서비스다
+# 반려동물: Service'2' 다. KorPetTourService는 없는 서비스다
 https://apis.data.go.kr/B551011/KorPetTourService2/areaBasedList2?serviceKey={KEY}&numOfRows=1&pageNo=1&MobileOS=ETC&MobileApp=ftskill&_type=json&areaCode=1
 
-# 두루누비 — 경로에 Service가 안 붙는다
+# 두루누비: 경로에 Service가 안 붙는다
 https://apis.data.go.kr/B551011/Durunubi/courseList?serviceKey={KEY}&numOfRows=1&pageNo=1&MobileOS=ETC&MobileApp=ftskill&_type=json
 ```
 
-나머지 서비스의 최소 호출은 `api-setup.md`의 해당 절(§3.5~§3.9)을 그대로 쓴다. **14종 전부
-2026-08-13에 실호출로 확인됐다** — 실패하면 경로 문제가 아니라 **활용신청이 빠진 것**이다.
+나머지 서비스의 최소 호출은 `api-setup.md` **§3.5~§3.9에 14종 전부 완전한 형태로 있다**. 키만 넣어
+그대로 실행하면 된다. 값이 0건이어도 `resultCode:0000`이면 **활성**이다(웰니스·의료관광은 전국 건수가
+적어 특정 시군구 0건이 정상, 수요지수 3종은 지표코드를 안 넣으면 0건이 정상).
+실패하면 경로 문제가 아니라 **활용신청이 빠진 것**이다.
 
 **판정과 안내**
 | 응답 | 뜻 | 안내 |
@@ -142,6 +146,6 @@ https://apis.data.go.kr/B551011/Durunubi/courseList?serviceKey={KEY}&numOfRows=1
 
 ## 끝맺음
 - *"필요한 데이터 창구는 다 열어놨어요. 반영에 좀 걸릴 수 있으니 그동안 지역부터 정하죠 🙂"*
-- **다음은 `$region-select`** — 이 주제를 어느 지역에서 풀지 팀이 정한다.
+- **다음은 `$region-select`**: 이 주제를 어느 지역에서 풀지 팀이 정한다.
 - 미반영(`Unauthorized`)이 남아 있어도 **멈추지 않는다.** 지역 대화를 하고 4단계 들어가기 전에
   다시 확인하면 된다.
