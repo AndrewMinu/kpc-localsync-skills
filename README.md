@@ -8,7 +8,7 @@
 ## 1. 설치
 
 ```bash
-npx skills@latest add AndrewMinu/kpc-bootcamp -a codex -g -y
+npx skills@latest add AndrewMinu/kpc-localsync-skills -a codex -g -y
 ```
 
 한 번만 하면 됩니다. 스킬 13개와 주제카드 25장, 전국 기준데이터가 같이 깔립니다.
